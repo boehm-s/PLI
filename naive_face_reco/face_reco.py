@@ -1,6 +1,10 @@
+from __future__ import division
 from PIL import Image, ImageDraw
 import face_recognition
+import os
+import pickle
 from colorthief import ColorThief
+
 
 class Face:
     def __init__(self, path):
@@ -9,6 +13,13 @@ class Face:
         emptyImg = Image.new('RGB', (2,2), (255, 255, 255))
         emptyImg.save("empty.png", "PNG")
         self.skin_color = self.__get_skin_color()
+        if os.path.exists('./eyes_data.pkl'):
+            with open('./eyes_data.pkl', 'rb') as input:
+                data = pickle.load(input)
+                l = [sum(e)/len(e) for e in zip(*data)]
+                self.eyes_data = tuple(map(int, l))
+                print(self.eyes_data)
+
         if len(self.face_landmarks_list) == 0:
             raise Exception('No faces found in the image')
 
@@ -24,14 +35,12 @@ class Face:
             x2 = eye_right - int((eye_right - eye_left) / 10)
             y2 = top_brows - int(h3 / 10)
             rec_skin = (x1, y1, x2, y2)
-            print("SKIN REC : {}".format(rec_skin))
             pil_image = Image.fromarray(self.image)
             cropped_skin = pil_image.crop(rec_skin)
             color_thief = ColorThief('./img/empty.png')
             color_thief.image = cropped_skin
             skin_color = color_thief.get_color(quality=1)
-            print("SKIN color : {}\n".format(skin_color))
-            return skin_color
+        return skin_color
 
     def get_eyes_color(self):
         eyes = []
@@ -56,7 +65,6 @@ class Face:
                 eyeLeft -= int(w/4)
                 eyeRight += int(w/4)
                 rec = (eyeLeft,eyeTop,eyeRight,eyeBottom)
-                print("eye REC : {}".format(rec))
                 eyes.append(rec)
 
             pil_image = Image.fromarray(self.image)
@@ -88,12 +96,12 @@ class Face:
                 main_color = color_thief.get_color(quality=1)
                 print("main color : {}\n".format(main_color))
 
-            for facial_feature in facial_features:
-                d.line(face_landmarks[facial_feature], width=5)
+            # for facial_feature in facial_features:
+            #     d.line(face_landmarks[facial_feature], width=5)
 
-            pil_image.show()
-        return eyes
+            # pil_image.show()
+        return main_color
 
-path = "./img/portrait.jpg"
-face = Face(path)
-face.get_eyes_color()
+# path = "./img/portrait.jpg"
+# face = Face(path)
+# face.get_eyes_color()
