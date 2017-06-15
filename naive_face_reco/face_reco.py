@@ -10,6 +10,7 @@ from colormath.color_objects import LabColor, LCHabColor, SpectralColor, sRGBCol
 import face_recognition
 import os
 import pickle
+import operator
 
 class Eye_color_data(object):
     def __init__(self):
@@ -36,8 +37,6 @@ class Face:
                 self.eyes_green = tuple(map(int, green))
                 self.eyes_blue = tuple(map(int, blue))
                 self.eyes_grey = tuple(map(int, grey))
-
-                print(self.eyes_brown)
 
         if len(self.face_landmarks_list) == 0:
             raise Exception('No faces found in the image')
@@ -114,15 +113,19 @@ class Face:
                 color_thief.image = cropped_im
                 main_color = color_thief.get_color(quality=1)
                 print("main color : {}\n".format(main_color))
-                brown = convert_color(self.brown, lab)
-                green = convert_color(self.green, lab)
-                blue = convert_color(self.blue, lab)
-                grey = convert_color(self.grey, lab)
 
-            # for facial_feature in facial_features:
-            #     d.line(face_landmarks[facial_feature], width=5)
+                brown = convert_color(sRGBColor(*[x/255 for x in self.eyes_brown]), LabColor)
+                green = convert_color(sRGBColor(*[x/255 for x in self.eyes_green]), LabColor)
+                blue = convert_color(sRGBColor(*[x/255 for x in self.eyes_blue]), LabColor)
+                grey = convert_color(sRGBColor(*[x/255 for x in self.eyes_grey]), LabColor)
+                main = convert_color(sRGBColor(*[x/255 for x in main_color]), LabColor)
 
-            # pil_image.show()
+
+
+            for facial_feature in facial_features:
+                d.line(face_landmarks[facial_feature], width=5)
+
+            pil_image.show()
         return main_color
 
 path = "./img/portrait.jpg"
