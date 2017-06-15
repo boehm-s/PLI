@@ -1,10 +1,22 @@
 from __future__ import division
 from PIL import Image, ImageDraw
+from colormath.color_objects import LabColor
+from colormath.color_diff import delta_e_cie1976
+from colorthief import ColorThief
+
+from colormath.color_conversions import convert_color
+from colormath.color_objects import LabColor, LCHabColor, SpectralColor, sRGBColor, XYZColor, LCHuvColor#, IPTColorimport
+
 import face_recognition
 import os
 import pickle
-from colorthief import ColorThief
 
+class Eye_color_data(object):
+    def __init__(self):
+        self.brown = []
+        self.blue = []
+        self.green = []
+        self.grey = []
 
 class Face:
     def __init__(self, path):
@@ -16,9 +28,16 @@ class Face:
         if os.path.exists('./eyes_data.pkl'):
             with open('./eyes_data.pkl', 'rb') as input:
                 data = pickle.load(input)
-                l = [sum(e)/len(e) for e in zip(*data)]
-                self.eyes_data = tuple(map(int, l))
-                print(self.eyes_data)
+                brown = [sum(e)/len(e) for e in zip(*data.brown)]
+                green = [sum(e)/len(e) for e in zip(*data.green)]
+                blue = [sum(e)/len(e) for e in zip(*data.blue)]
+                grey = [sum(e)/len(e) for e in zip(*data.grey)]
+                self.eyes_brown = tuple(map(int, brown))
+                self.eyes_green = tuple(map(int, green))
+                self.eyes_blue = tuple(map(int, blue))
+                self.eyes_grey = tuple(map(int, grey))
+
+                print(self.eyes_brown)
 
         if len(self.face_landmarks_list) == 0:
             raise Exception('No faces found in the image')
@@ -95,6 +114,10 @@ class Face:
                 color_thief.image = cropped_im
                 main_color = color_thief.get_color(quality=1)
                 print("main color : {}\n".format(main_color))
+                brown = convert_color(self.brown, lab)
+                green = convert_color(self.green, lab)
+                blue = convert_color(self.blue, lab)
+                grey = convert_color(self.grey, lab)
 
             # for facial_feature in facial_features:
             #     d.line(face_landmarks[facial_feature], width=5)
@@ -102,6 +125,6 @@ class Face:
             # pil_image.show()
         return main_color
 
-# path = "./img/portrait.jpg"
-# face = Face(path)
-# face.get_eyes_color()
+path = "./img/portrait.jpg"
+face = Face(path)
+face.get_eyes_color()
