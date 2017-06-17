@@ -120,7 +120,11 @@ class Face:
                 grey = convert_color(sRGBColor(*[x/255 for x in self.eyes_grey]), LabColor)
                 main = convert_color(sRGBColor(*[x/255 for x in main_color]), LabColor)
 
+                color_dict = {'brown': brown, 'green': green, 'blue': blue, 'grey': grey}
 
+                #for color, value in color_dict.items():
+                choose = min(color_dict, key = lambda k: delta_e_cie1976(color_dict[k], main))
+                print("EYES ARE {}".format(choose))
 
             for facial_feature in facial_features:
                 d.line(face_landmarks[facial_feature], width=5)
@@ -128,6 +132,6 @@ class Face:
             pil_image.show()
         return main_color
 
-path = "./img/portrait.jpg"
+path = "./img/portrait3.jpg"
 face = Face(path)
 face.get_eyes_color()
