@@ -42,3 +42,7 @@ We can read scientific papers about object detection and tracking and then imple
 ### What we do :
 
 We'll realize a POC (Proof Of Concept) with ML frameworks and then take the time to learn more about object detection algorithmes and try to implement them from scratch.
+Since we want to track and recognize people, we need to store a lot of data, especially images. So we need to choose a DBMS that meets our requirements.
+
+
+DB : ext4 / btrFS File System to store images / video and neo4j for metadata
