@@ -132,6 +132,6 @@ class Face:
             pil_image.show()
         return main_color
 
-path = "./img/portrait3.jpg"
+path = "./train_img/p6_blue.jpg"
 face = Face(path)
 face.get_eyes_color()

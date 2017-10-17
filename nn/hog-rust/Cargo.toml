@@ -1,0 +1,12 @@
+[package]
+name = "hog"
+version = "0.1.0"
+authors = ["Steven BOEHM <boehm_s@etna-alternance.net>"]
+
+[dependencies]
+jpeg-decoder = "*"
+log = "*"
+
+[features]
+default = []
+associated_consts = []
