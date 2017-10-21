@@ -1,5 +1,6 @@
 mod pixels;
 mod processing;
+mod matrix;
 
 #[macro_use] extern crate log;
 
@@ -15,5 +16,5 @@ fn main() {
         Err(e) => panic!("get_pixels: {:?}", e)
     };
 
-    println!("PIXELS: {:?}\nMETADATA: {:?}\n RAW DATA : {:?}", img.pixel_data, img.metadata, img.raw_data);
+    println!("Image pixel matrix : {}", img.pixel_matrix);
 }

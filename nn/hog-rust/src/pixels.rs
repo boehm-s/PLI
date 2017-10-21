@@ -2,6 +2,7 @@ extern crate jpeg_decoder as jpeg;
 
 use std::fs::File;
 use std::io::BufReader;
+use matrix::Matrix;
 
 #[derive(Debug)]
 pub struct ImageSize {
@@ -11,25 +12,29 @@ pub struct ImageSize {
 
 pub struct RgbaImage {
     pub raw_data: Vec<u8>,
-    pub pixel_data: Vec<Vec<u8>>,
-    pub metadata: ImageSize
+    pub pixel_matrix: Matrix<Vec<u8>>,
+    pub size: ImageSize
 }
 
 fn get_from_jpeg(file:File) -> Result<RgbaImage, String> {
     let mut decoder = jpeg::Decoder::new(BufReader::new(file));
-    decoder.read_info().expect("Cannot read metadata !");
+    decoder.read_info().expect("Cannot read size !");
     let info = decoder.info().unwrap();
     match decoder.decode() {
-        Ok(p) => Ok(RgbaImage {
-            raw_data: p
+        Ok(pixels) => Ok(RgbaImage {
+            raw_data: pixels
                 .chunks(3)
                 .map(|x| { let mut y = x.to_vec(); y.push(1); y})
                 .fold(Vec::new(), |mut acc, mut x| { acc.append(&mut x); acc }),
-            pixel_data: p
-                .chunks(3)
-                .map(|x| { let mut y = x.to_vec(); y.push(1); y})
-                .collect::<Vec<_>>(),
-            metadata: ImageSize {
+            pixel_matrix: Matrix::new(
+                info.width as usize,
+                info.height as usize,
+                pixels
+                    .chunks(3)
+                    .map(|x| { let mut y = x.to_vec(); y.push(1); y})
+                    .collect::<Vec<_>>()
+            ),
+            size: ImageSize {
                 width: info.width,
                 height: info.height
             }
