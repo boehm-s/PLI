@@ -16,5 +16,5 @@ fn main() {
         Err(e) => panic!("get_pixels: {:?}", e)
     };
 
-    println!("Image pixel matrix : {}", img.pixel_matrix);
+    println!("Image pixel matrix : \n{}", img.pixel_matrix);
 }

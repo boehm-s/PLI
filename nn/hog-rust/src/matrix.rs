@@ -1,6 +1,5 @@
 use std::fmt;
 
-
 pub struct Matrix<T> {
     rows: usize,
     cols: usize,
@@ -24,17 +23,36 @@ impl <T> Matrix<T> {
 impl fmt::Display for Matrix<Vec<u8>> {
     /// Formats the Matrix for display.
     fn fmt(&self, f: &mut fmt::Formatter) -> Result<(), fmt::Error> {
-        let mut max_datum_width = 0;
-        for datum in &self.data {
-            let datum_width = match f.precision() {
-                Some(places) => format!("{:?}", datum).len(),
-                None => format!("{:?}", datum).len(),
+        let mut max_pixels_width = 0;
+        for pixels in &self.data {
+            let pixels_width = match f.precision() {
+                Some(places) => format!("{:?}", pixels).len(),
+                None => format!("{:?}", pixels).len(),
             };
-            if datum_width > max_datum_width {
-                max_datum_width = datum_width;
+            if pixels_width > max_pixels_width {
+                max_pixels_width = pixels_width;
             }
         }
-        let width = max_datum_width;
+        let width = max_pixels_width;
+
+        fn format_pixels(pixels: &Vec<u8>)
+                        -> String
+        {
+            let vec = vec![1,25,320];
+            let formatted_str:String = vec
+                .into_iter()
+                .enumerate()
+                .map(|(i, x)| {
+                    match i {
+                        0 => format!("[{:03},", x),
+                        2 => format!("{:03}]", x),
+                        _ => format!("{:03},", x)
+                    }
+                })
+                .collect();
+
+            formatted_str
+        }
 
         fn write_row(f: &mut fmt::Formatter,
                         row: &[Vec<u8>],
@@ -44,13 +62,13 @@ impl fmt::Display for Matrix<Vec<u8>> {
                         -> Result<(), fmt::Error>
         {
             try!(write!(f, "{}", left_delimiter));
-            for (index, datum) in row.iter().enumerate() {
+            for (index, pixels) in row.iter().enumerate() {
                 match f.precision() {
                     Some(places) => {
-                        try!(write!(f, "{:?}", datum));
+                        try!(write!(f, "{}", format_pixels(pixels)));
                     }
                     None => {
-                        try!(write!(f, "{:?}", datum));
+                        try!(write!(f, "{}", format_pixels(pixels)));
                     }
                 }
                 if index < row.len() - 1 {
