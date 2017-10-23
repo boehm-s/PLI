@@ -4,48 +4,45 @@ use std::fs::File;
 use std::io::BufReader;
 use matrix::Matrix;
 
-#[derive(Debug)]
-pub struct ImageSize {
-    pub width: u16,
-    pub height: u16
+
+pub struct GrayscaleImage {
+    pub pixel_matrix: Matrix<u8>
 }
 
-pub struct RgbaImage {
-    pub raw_data: Vec<u8>,
+pub struct RGBImage {
     pub pixel_matrix: Matrix<Vec<u8>>,
-    pub size: ImageSize
 }
 
-fn get_from_jpeg(file:File) -> Result<RgbaImage, String> {
-    let mut decoder = jpeg::Decoder::new(BufReader::new(file));
-    decoder.read_info().expect("Cannot read size !");
-    let info = decoder.info().unwrap();
-    match decoder.decode() {
-        Ok(pixels) => Ok(RgbaImage {
-            raw_data: pixels
-                .chunks(3)
-                .map(|x| { let mut y = x.to_vec(); y.push(1); y})
-                .fold(Vec::new(), |mut acc, mut x| { acc.append(&mut x); acc }),
-            pixel_matrix: Matrix::new(
-                info.width as usize,
-                info.height as usize,
-                pixels
-                    .chunks(3)
-                    .map(|x| { let mut y = x.to_vec(); y.push(1); y})
-                    .collect::<Vec<_>>()
-            ),
-            size: ImageSize {
-                width: info.width,
-                height: info.height
-            }
-        }),
-        Err(e) => Err(e.to_string())
+impl RGBImage {
+
+    pub fn new(format:&str, file:File) -> Result<RGBImage, String> {
+        match format {
+            "jpeg" => Ok(RGBImage::from_jpeg(file)?),
+            _ => Err(String::from("Image format not supported !"))
+        }
     }
-}
 
-pub fn get(format:&str, file:File) -> Result<RgbaImage, String> {
-    match format {
-        "jpeg" => Ok(get_from_jpeg(file)?),
-        _ => Err(String::from("Image format not supported !"))
+
+    pub fn from_jpeg(file:File) -> Result<RGBImage, String> {
+        let mut decoder = jpeg::Decoder::new(BufReader::new(file));
+        decoder.read_info().expect("Cannot read size !");
+        let info = decoder.info().unwrap();
+        match decoder.decode() {
+            Ok(pixels) => Ok(RGBImage {
+                pixel_matrix: Matrix::new(
+                    info.width as usize,
+                    info.height as usize,
+                    pixels
+                        .chunks(3)
+                        .map(|x| { let mut y = x.to_vec(); y})
+                        .collect::<Vec<_>>()
+                )
+            }),
+            Err(e) => Err(e.to_string())
+        }
+    }
+
+    pub fn to_grayscale(&mut self) -> Result<GrayscaleImage, String> {
+        /// luminosity method : 0.21 * r + 0.72 * g + 0.07 * b
     }
 }

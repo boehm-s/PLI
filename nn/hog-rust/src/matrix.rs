@@ -38,8 +38,7 @@ impl fmt::Display for Matrix<Vec<u8>> {
         fn format_pixels(pixels: &Vec<u8>)
                         -> String
         {
-            let vec = vec![1,25,320];
-            let formatted_str:String = vec
+            let formatted_str:String = pixels
                 .into_iter()
                 .enumerate()
                 .map(|(i, x)| {
