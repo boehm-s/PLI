@@ -1,1 +1,1 @@
-use pixels::RGBImage;
+use pixels::PixelsImage;

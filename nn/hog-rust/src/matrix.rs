@@ -1,5 +1,6 @@
 use std::fmt;
 
+#[derive(Debug)]
 pub struct Matrix<T> {
     rows: usize,
     cols: usize,
@@ -18,8 +19,7 @@ impl <T> Matrix<T> {
     }
 }
 
-// Display matrix
-
+// Display matrix : need to be done correctly
 impl fmt::Display for Matrix<Vec<u8>> {
     /// Formats the Matrix for display.
     fn fmt(&self, f: &mut fmt::Formatter) -> Result<(), fmt::Error> {
@@ -35,9 +35,7 @@ impl fmt::Display for Matrix<Vec<u8>> {
         }
         let width = max_pixels_width;
 
-        fn format_pixels(pixels: &Vec<u8>)
-                        -> String
-        {
+        fn format_pixels(pixels: &Vec<u8>) -> String {
             let formatted_str:String = pixels
                 .into_iter()
                 .enumerate()
@@ -53,26 +51,14 @@ impl fmt::Display for Matrix<Vec<u8>> {
             formatted_str
         }
 
-        fn write_row(f: &mut fmt::Formatter,
-                        row: &[Vec<u8>],
-                        left_delimiter: &str,
-                        right_delimiter: &str,
-                        width: usize)
-                        -> Result<(), fmt::Error>
-        {
+        fn write_row(f: &mut fmt::Formatter, row: &[Vec<u8>], left_delimiter: &str, right_delimiter: &str, width: usize) -> Result<(), fmt::Error> {
             try!(write!(f, "{}", left_delimiter));
             for (index, pixels) in row.iter().enumerate() {
                 match f.precision() {
-                    Some(places) => {
-                        try!(write!(f, "{}", format_pixels(pixels)));
-                    }
-                    None => {
-                        try!(write!(f, "{}", format_pixels(pixels)));
-                    }
+                    Some(places) => { try!(write!(f, "{}", format_pixels(pixels))); }
+                    None => { try!(write!(f, "{}", format_pixels(pixels))); }
                 }
-                if index < row.len() - 1 {
-                    try!(write!(f, " "));
-                }
+                if index < row.len() - 1 { try!(write!(f, " ")); }
             }
             write!(f, "{}", right_delimiter)
         }
@@ -80,25 +66,13 @@ impl fmt::Display for Matrix<Vec<u8>> {
         match self.rows {
             1 => write_row(f, &self.data, "[", "]", width),
             _ => {
-                try!(write_row(f,
-                               &self.data[0..self.cols],
-                               "⎡", // \u{23a1} LEFT SQUARE BRACKET UPPER CORNER
-                               "⎤", // \u{23a4} RIGHT SQUARE BRACKET UPPER CORNER
-                               width));
+                try!(write_row(f, &self.data[0..self.cols], "⎡",  "⎤",  width));
                 try!(f.write_str("\n"));
                 for row_index in 1..self.rows - 1 {
-                    try!(write_row(f,
-                                   &self.data[row_index * self.cols..(row_index + 1) * self.cols],
-                                   "⎢", // \u{23a2} LEFT SQUARE BRACKET EXTENSION
-                                   "⎥", // \u{23a5} RIGHT SQUARE BRACKET EXTENSION
-                                   width));
+                    try!(write_row(f, &self.data[row_index * self.cols..(row_index + 1) * self.cols], "⎢",  "⎥",  width));
                     try!(f.write_str("\n"));
                 }
-                write_row(f,
-                          &self.data[(self.rows - 1) * self.cols..self.rows * self.cols],
-                          "⎣", // \u{23a3} LEFT SQUARE BRACKET LOWER CORNER
-                          "⎦", // \u{23a6} RIGHT SQUARE BRACKET LOWER CORNER
-                          width)
+                write_row(f, &self.data[(self.rows - 1) * self.cols..self.rows * self.cols], "⎣",  "⎦",  width)
             }
         }
 
