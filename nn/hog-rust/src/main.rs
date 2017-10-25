@@ -2,7 +2,7 @@ mod pixels;
 mod processing;
 mod matrix;
 
-#[macro_use] extern crate log;
+// #[macro_use] extern crate log;
 
 use std::fs::File;
 use std::{env};
@@ -18,5 +18,5 @@ fn main() {
     };
 
     println!("Image pixel matrix : \n{:?}", img.rgb_matrix);
-    println!("Image NB matrix : \n{:?}", img.grayscale_matrix);
+    matrix::print_matrix_int(img.grayscale_matrix);
 }
