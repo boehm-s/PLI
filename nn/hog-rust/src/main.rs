@@ -17,6 +17,10 @@ fn main() {
         Err(e) => panic!("get_pixels: {:?}", e)
     };
 
-    println!("Image pixel matrix : \n{:?}", img.rgb_matrix);
+    println!("grayscale pixel matrix : \n");
     matrix::print_matrix_int(img.grayscale_matrix);
+
+    println!("color pixel matrix : \n");
+    matrix::print_matrix_vec(img.rgb_matrix);
+
 }

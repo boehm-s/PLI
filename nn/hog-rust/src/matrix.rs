@@ -1,4 +1,4 @@
- #[derive(Debug)]
+#[derive(Debug)]
 pub struct Matrix<T> {
     rows: usize,
     cols: usize,
@@ -17,14 +17,14 @@ impl <T> Matrix<T> {
     }
 }
 
-pub fn print_matrix<T>(matrix: Matrix<T>, format_type:&Fn(&[T]) -> String) {
+pub fn print_matrix<T>(matrix: Matrix<T>, format_type:&Fn(&T) -> String) {
     let m = matrix.cols - 1;
 
     matrix.data
         .chunks(matrix.cols)
         .enumerate()
         .for_each(|(i, x)| {
-            let _str = format_type(x);
+            let _str = format_ref_array(x, format_type);
 
             match i {
                 0 => print_matrix_row(_str, 0),
@@ -32,27 +32,47 @@ pub fn print_matrix<T>(matrix: Matrix<T>, format_type:&Fn(&[T]) -> String) {
                 _ => print_matrix_row(_str, 1)
             }
         });
-
 }
 
+fn format_ref_array<T>(ref_array:&[T], format_type:&Fn(&T) -> String) -> String {
+    let mut _str = String::from("");
+    let mut i = 0;
 
+    for x in ref_array {
+        if i == ref_array.len() - 1 {
+            _str = format!("{}{}", _str, format_type(x));
+        } else {
+            _str = format!("{}{}, ", _str, format_type(x));
+        }
 
-fn format_u8(f:&[u8]) -> String {
-    let _str = f
-        .to_vec()
+        i = i + 1;
+    }
+
+    _str
+}
+
+fn format_u8(t:&u8) -> String {
+    format!("{}", t)
+}
+
+fn format_vecu8(t:&Vec<u8>) -> String {
+    t
         .into_iter()
         .enumerate()
         .map(|(i, x)| match i {
-            _ if i == f.to_vec().len() - 1 => format!("{}", x),
-            _ => format!("{}, ", x)
+            0 => format!("({:03}, ", x),
+            _ if i == t.len() - 1 => format!("{:03})", x),
+            _  => format!("{:03}, ", x)
         })
-        .collect::<String>();
-
-    format!("{}", _str)
+        .collect::<String>()
 }
+
 
 pub fn print_matrix_int(matrix: Matrix<u8>) {
     print_matrix(matrix, &format_u8);
+}
+pub fn print_matrix_vec(matrix: Matrix<Vec<u8>>) {
+    print_matrix(matrix, &format_vecu8);
 }
 
 pub fn print_matrix_row(row:String, pos:i32) {
