@@ -1,4 +1,4 @@
-#[derive(Debug)]
+ #[derive(Debug)]
 pub struct Matrix<T> {
     rows: usize,
     cols: usize,
@@ -17,25 +17,14 @@ impl <T> Matrix<T> {
     }
 }
 
-pub fn print_matrix_vec(matrix: Matrix<Vec<u8>>) {
-
-}
-
-pub fn print_matrix_int(matrix: Matrix<u8>) {
+pub fn print_matrix<T>(matrix: Matrix<T>, format_type:&Fn(&[T]) -> String) {
     let m = matrix.cols - 1;
 
     matrix.data
         .chunks(matrix.cols)
         .enumerate()
         .for_each(|(i, x)| {
-            let _str = x
-                .to_vec()
-                .into_iter()
-                .enumerate()
-                .map(|(i, y)| match i {
-                    _ if i == x.to_vec().len() - 1 => format!("{}", y),
-                    _ => format!("{}, ", y)
-                }).collect::<String>();
+            let _str = format_type(x);
 
             match i {
                 0 => print_matrix_row(_str, 0),
@@ -43,6 +32,27 @@ pub fn print_matrix_int(matrix: Matrix<u8>) {
                 _ => print_matrix_row(_str, 1)
             }
         });
+
+}
+
+
+
+fn format_u8(f:&[u8]) -> String {
+    let _str = f
+        .to_vec()
+        .into_iter()
+        .enumerate()
+        .map(|(i, x)| match i {
+            _ if i == f.to_vec().len() - 1 => format!("{}", x),
+            _ => format!("{}, ", x)
+        })
+        .collect::<String>();
+
+    format!("{}", _str)
+}
+
+pub fn print_matrix_int(matrix: Matrix<u8>) {
+    print_matrix(matrix, &format_u8);
 }
 
 pub fn print_matrix_row(row:String, pos:i32) {
