@@ -15,7 +15,17 @@ impl <T> Matrix<T> {
             data: data
         }
     }
+
+    pub fn get(&mut self, row: usize, col: usize) -> &T {
+        let n = row * self.cols + col;
+        &self.data[n]
+    }
 }
+
+// index starts at 0
+
+//   need to implement separator and space optional arguments
+//   to customize the matrix display in a more efficient way
 
 pub fn print_matrix<T>(matrix: Matrix<T>, format_type:&Fn(&T) -> String) {
     let m = matrix.cols - 1;

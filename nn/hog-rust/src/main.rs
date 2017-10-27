@@ -23,4 +23,9 @@ fn main() {
     println!("color pixel matrix : \n");
     matrix::print_matrix_vec(img.rgb_matrix);
 
+    // let img_gradient =
+
+    let test_gradient = processing::gradient(56,94,93,55);
+
+    println!("\n\n\nGRADIENT TEST : {:?}", test_gradient);
 }
