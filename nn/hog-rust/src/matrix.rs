@@ -1,3 +1,5 @@
+use processing::GradientVector;
+
 #[derive(Debug)]
 pub struct Matrix<T> {
     pub rows: usize,
@@ -27,7 +29,7 @@ impl <T> Matrix<T> {
 //   need to implement separator and space optional arguments
 //   to customize the matrix display in a more efficient way
 
-pub fn print_matrix<T>(matrix: Matrix<T>, format_type:&Fn(&T) -> String) {
+pub fn print_matrix<T>(matrix: &Matrix<T>, format_type:&Fn(&T) -> String) {
     let m = matrix.cols - 1;
 
     matrix.data
@@ -77,12 +79,8 @@ fn format_vecu8(t:&Vec<u8>) -> String {
         .collect::<String>()
 }
 
-
-pub fn print_matrix_int(matrix: Matrix<u8>) {
-    print_matrix(matrix, &format_u8);
-}
-pub fn print_matrix_vec(matrix: Matrix<Vec<u8>>) {
-    print_matrix(matrix, &format_vecu8);
+fn format_gradientvector(t:&GradientVector) -> String {
+    format!("{:?}", t)
 }
 
 pub fn print_matrix_row(row:String, pos:i32) {
@@ -108,4 +106,17 @@ fn format_pixels(pixels: &Vec<u8>) -> String {
         .collect();
 
     formatted_str
+}
+
+
+pub fn print_matrix_int(matrix: &Matrix<u8>) {
+    print_matrix(matrix, &format_u8);
+}
+
+pub fn print_matrix_vec(matrix: &Matrix<Vec<u8>>) {
+    print_matrix(matrix, &format_vecu8);
+}
+
+pub fn print_matrix_gradient(matrix: &Matrix<GradientVector>) {
+    print_matrix(matrix, &format_gradientvector);
 }

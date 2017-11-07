@@ -18,14 +18,15 @@ fn main() {
     };
 
     println!("grayscale pixel matrix : \n");
-    matrix::print_matrix_int(img.grayscale_matrix);
+    matrix::print_matrix_int(&img.grayscale_matrix);
 
     println!("color pixel matrix : \n");
-    matrix::print_matrix_vec(img.rgb_matrix);
+    matrix::print_matrix_vec(&img.rgb_matrix);
 
-    // let img_gradient =
+    // print with borrows
 
-    let test_gradient = processing::gradient(56,94,93,55);
+    let matrix_gradient = processing::grayscale_gradient(img.grayscale_matrix);
 
-    println!("\n\n\nGRADIENT TEST : {:?}", test_gradient);
+    println!("gradient pixel matrix : \n");
+    matrix::print_matrix_gradient(&matrix_gradient);
 }
