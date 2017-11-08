@@ -2,7 +2,7 @@ use matrix::Matrix;
 
 #[derive(Debug)]
 pub struct GradientVector {
-    data: Vec<i16>,
+    data: Vec<i64>,
     magnitude: f64,
     angle: f64
 }
@@ -17,9 +17,7 @@ pub fn grayscale_gradient(img: Matrix<u8>) -> Matrix<GradientVector> {
         .map(|(i, _el)| {
             let x:u8 = (i % cols) as u8;
             let y:u8 = (i / cols) as u8;
-            println!("x: {}, y: {}", x, y);
             let border_pixels = surroundings_pixels(&img, x, y);
-            println!("border_pixels: {:?}", border_pixels);
             gradient(
                 border_pixels[0],
                 border_pixels[1],
@@ -38,8 +36,6 @@ pub fn surroundings_pixels(img: &Matrix<u8>, x:u8, y:u8) -> Vec<u8> {
     let mut bottom:u8 = 0;
 
     let pixel_pos = (img.cols * y as usize) + x as usize;
-
-    println!("pixel_pos : {}", pixel_pos);
 
     // can do shorter
     if y != 0 {
@@ -63,12 +59,14 @@ pub fn surroundings_pixels(img: &Matrix<u8>, x:u8, y:u8) -> Vec<u8> {
 }
 
 pub fn gradient(left:u8, right:u8, top:u8, bottom:u8) -> GradientVector {
-    println!("left: {}, right: {}, top: {}, bottom: {}",left,right,top,bottom);
-    let x:i16 = (right - left) as i16;
-    let y:i16 = (top - bottom) as i16;
+    let x = (right as i64 - left as i64);
+    let y = (top as i64 - bottom as i64);
     GradientVector {
         data: vec![x, y],
         magnitude: ((x.pow(2) + y.pow(2)) as f64).sqrt(),
-        angle: ((x/y) as f64).atan()
+        angle: match y {
+            0 => 0 as f64,
+            _ => ((x/y) as f64).atan()
+        }
     }
 }
