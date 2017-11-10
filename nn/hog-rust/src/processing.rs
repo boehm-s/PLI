@@ -58,15 +58,16 @@ pub fn surroundings_pixels(img: &Matrix<u8>, x:u8, y:u8) -> Vec<u8> {
     vec![left, right, top, bottom]
 }
 
+// type confusion, could be better
 pub fn gradient(left:u8, right:u8, top:u8, bottom:u8) -> GradientVector {
-    let x = (right as i64 - left as i64);
-    let y = (top as i64 - bottom as i64);
+    let x:f64 = ((right as f64 - left as f64) + 255.0) / 2.0;
+    let y:f64 = ((top as f64 - bottom as f64) + 255.0) / 2.0;
     GradientVector {
-        data: vec![x, y],
-        magnitude: ((x.pow(2) + y.pow(2)) as f64).sqrt(),
+        data: vec![x as i64, y as i64],
+        magnitude: (((x as i64).pow(2) + (y as i64).pow(2)) as f64).sqrt(),
         angle: match y {
-            0 => 0 as f64,
-            _ => ((x/y) as f64).atan()
+            0.0 => 0 as f64,
+            _ => (x/y).atan()
         }
     }
 }
