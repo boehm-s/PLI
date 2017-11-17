@@ -4,4 +4,47 @@ body,
     height: 100%;
     width: 100%;
     margin: 0;
+    background: #1a2333;
+}
+
+.text-info {
+    font-family: 'Raleway', sans-serif;
+}
+
+#status-info {
+    position: fixed;
+    width: 50%;
+    left: 25%;
+    top: 40%;
+    padding-bottom: 25px;
+    background: #000;
+    border-radius: 5px;
+    border: 4px solid #C6C6C6;
+}
+
+#status-info > .line {
+    font-size: 27px;
+    font-weight: bold;
+    padding: 15px;
+}
+
+#status-info > .line._1 {
+    display: flex;
+    background: #000;
+    color: #FFF;
+}
+
+#status-info > .line._2 {
+    background: #C6C6C6;
+    color: #000;
+}
+
+#status-info > .line._1 > span:first-child {
+    width: 100%;
+}
+
+#loading-percent {
+    text-align: right;
+    line-height: 27px;
+    color: #F00;
 }

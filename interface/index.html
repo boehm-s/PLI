@@ -4,11 +4,23 @@
     <meta charset="UTF-8">
     <title> Samaritain </title>
     <link href='https://api.mapbox.com/mapbox-gl-js/v0.41.0/mapbox-gl.css' rel='stylesheet' />
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
     <link href='./css/main.css' rel='stylesheet' />
   </head>
   <body>
 
-    <div id="map"></div>
+    <div id="map">
+    </div>
+
+    <div id="status-info">
+      <div class="line _1">
+	<span class="text-info"> PROGRAM : SAMARITAIN </span>
+	<span id="loading-percent" class="text-info">45%</span>
+      </div>
+      <div class="line _2">
+	<span class="text-info"> STATUS : LOADING DATA</span>
+      </div>
+    </div>
 
     <script src='https://api.mapbox.com/mapbox-gl-js/v0.41.0/mapbox-gl.js'></script>
     <script>
