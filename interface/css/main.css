@@ -7,6 +7,20 @@ body,
     background: #1a2333;
 }
 
+
+.cl-red {
+    color: #F00;
+}
+
+.cl-white {
+    color: #FFF;
+}
+
+.bg-red {
+    background: #F00;
+}
+
+
 .text-info {
     font-family: 'Raleway', sans-serif;
     letter-spacing: 3px;
@@ -17,36 +31,137 @@ body,
     width: 50%;
     left: 25%;
     top: 40%;
+}
+
+.status-info {
     padding-bottom: 25px;
     background: #000;
-    border-radius: 5px;
+    border-radius: 8px;
     border: 4px solid #C6C6C6;
     transition: 0.4s;
 }
 
-#status-info > .line {
+.status-info > .line {
     font-size: 27px;
     font-weight: bold;
     padding: 15px;
 }
 
-#status-info > .line._1 {
+.status-info > .line._1 {
     display: flex;
     background: #000;
     color: #FFF;
 }
 
-#status-info > .line._2 {
+.status-info > .line._2 {
     background: #C6C6C6;
     color: #000;
 }
 
-#status-info > .line._1 > span:first-child {
+.status-info > .line._1 > span:first-child {
     width: 100%;
 }
 
-#loading-percent {
+.right-info {
     text-align: right;
     line-height: 27px;
     color: #F00;
+}
+
+
+/* markers */
+
+.marker {
+    background: #FFF;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    box-shadow: 0px 0px 20px #F00;
+    cursor: pointer;
+    transition: 0.4s;
+}
+
+.threat {
+    background: #F00;
+    width: 25px;
+    height: 25px;
+}
+
+
+/* threat display */
+
+.threatContainer {
+    width: 500px;
+    margin-left: -15px;
+    margin-top: -15px;
+}
+
+.threat-info {
+    margin-bottom: 15px;
+}
+
+.threat-info > .line,
+.right-info {
+    font-size: 20px;
+    line-height: 20px;
+}
+
+.threat-info > .line._1 > span:first-child {
+    width: calc(80% - 50px);
+    margin-left: 50px;
+}
+
+.status-info.threat-detail {
+    color: #FFF;
+}
+
+.threat-detail {
+    padding: 15px;
+}
+
+.right-left-container {
+    display: inline-block;
+    width: 100%;
+}
+
+.left-part,
+.right-part {
+    float: left;
+    width: calc(50% - 20px);
+    padding: 10px;
+}
+
+.left-part {
+    height: 150px;
+}
+
+.right-part {
+    height: 160px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    font-size: 20px;
+}
+
+.data-acquisition {
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+.right-part > div {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.right-part > div:first-child {
+    margin-top: 0;
+}
+
+.cam-title {
+    width: 100%;
+    min-height: 30px;
+    line-height: 30px;
+    margin-top: 10px;
+    background: #F00;
+    font-size: 20px;
+    text-align: center;
 }
