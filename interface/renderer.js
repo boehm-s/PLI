@@ -66,9 +66,17 @@ const addThreat = (marker, threatInfo) => {
 	overflowMarker.style.transform = 'initial';
 	marker.appendChild(overflowMarker);
 	marker.appendChild(threatDisplay(threatInfo));
+	marker.onclick = e => {
+	    removeThreat(marker);
+	}
     };
 };
-const removeThreat = marker => marker.classList.remove('threat');
+const removeThreat = marker => {
+    while(marker.firstChild){
+	marker.removeChild(marker.firstChild);
+    }
+    initThreat();
+}
 
 const threatDisplay = threatInfo => {
     const div = document.createElement('div');
@@ -106,24 +114,29 @@ const threatDisplay = threatInfo => {
     return div;
 };
 
+const initThreat = () => {
+    const markers = document.getElementsByClassName('marker');
+    const choosenMarker = Array.from(markers)
+    .filter(marker => 'Camera 2' === marker.dataset.description)[0];
+    const camId = choosenMarker.dataset.description.match(/[0-9]/)[0];
+
+    addThreat(choosenMarker, {
+	camId,
+        threatType: 'THIEF',
+	isIdentified: 'IDENTIFIED',
+	threatImg: 'https://cdn-01.independent.ie/irish-news/article31333844.ece/68f2b/AUTOCROP/h342/2015-06-27_iri_10721858_I1.JPG',
+	probability: '70',
+	weapon: 'KNIFE',
+	suspectFullName: 'Mickal Crocks',
+	suspectAge: 27,
+	suspectSize: '1m85'
+    });
+}
+
 map.on('load', _ => {
     buildMarkers(geojson);
     setTimeout(_ => {
-	const markers = document.getElementsByClassName('marker');
-	const choosenMarker = Array.from(markers)
-	      .filter(marker => 'Camera 2' === marker.dataset.description)[0];
-	const camId = choosenMarker.dataset.description.match(/[0-9]/)[0];
+	initThreat();
 
-	addThreat(choosenMarker, {
-	    camId,
-	    threatType: 'THIEF',
-	    isIdentified: 'IDENTIFIED',
-	    threatImg: 'https://cdn-01.independent.ie/irish-news/article31333844.ece/68f2b/AUTOCROP/h342/2015-06-27_iri_10721858_I1.JPG',
-	    probability: '70',
-	    weapon: 'KNIFE',
-	    suspectFullName: 'Mickal Crocks',
-	    suspectAge: 27,
-	    suspectSize: '1m85'
-	});
     }, 2000);
 });
