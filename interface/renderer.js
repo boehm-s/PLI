@@ -59,10 +59,7 @@ const buildMarkers = geojson =>
 const buildCamList = geojson => {
     const el = document.createElement('div');
     el.classList.add('cam-list')
-    el.innerHTML  = `<div class="top-menu"> 
-						<span class="title">Good Morning agent Smith</span>
-						<span class="subtitle"> Here\'s the current available cameras</span>
-    				</div>`;
+
     geojson.features.forEach(camera => {
 	console.log(camera);
 	const cam = document.createElement('div');
@@ -70,9 +67,7 @@ const buildCamList = geojson => {
 	    goToCam(camera.geometry.coordinates);
 	}
 	cam.classList.add('cam')
-	cam.innerHTML = `<span> ${camera.properties.description} 
-						<img src="https://vignette.wikia.nocookie.net/pediaofinterest/images/6/6d/Samaritan_Target.png/revision/latest?cb=20150930120609"></img> 
-					</span>`;
+	cam.innerHTML = `<span> ${camera.properties.description}</span>`;
 	el.appendChild(cam);
     });
     const mapElem = document.getElementById('map');

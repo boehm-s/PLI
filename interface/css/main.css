@@ -172,49 +172,21 @@ body,
     height: 100%;
     position: absolute;
     background-color: white;
-    right: 0;
-    border-left: solid red 2px;
-    background-color: black;
-    color: red;
+    top: 25px;
+    right: 50px;
+    background-color: transparent;
+    color: white;
 }
 
 .cam-list > .cam {
     padding: 15px;
     margin-bottom: 10px;
-    font-size: 15px;
-    font-weight: bold;
+    font-size: 13px;
+    background-color: rgba(255, 0, 0, 0.2);
+    display: grid;
     text-align: center;
-}
-
-.cam-list > .cam > span > img{
-    width: 40px;
-    height: 40px;
-    float: left;
-    position: relative;
-    top: -6px;
 }
 
 .cam-list > .cam:hover {
-    padding: 15px;
-    font-size: 15px;
-    font-weight: bold;
     cursor: pointer;
-}
-
-.cam-list > .top-menu {
-    width: 100%;
-    text-align: center;
-    border-bottom: solid red 2px;
-}
-
-.cam-list > .top-menu > .title{
-    font-size: 18px;
-    display: block;
-    margin-bottom: 15px;
-}
-
-.cam-list > .top-menu > .subtitle{
-    font-size: 13px;
-    display: block;
-    margin-bottom: 15px;
 }
