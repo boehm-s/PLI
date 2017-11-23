@@ -58,30 +58,30 @@ const buildMarkers = geojson =>
 
 const buildCamList = geojson => {
     const el = document.createElement('div');
-    el.classList.add('cam-list')
 
+    el.classList.add('cam-list');
     geojson.features.forEach(camera => {
-	console.log(camera);
 	const cam = document.createElement('div');
-	cam.onclick = e => {
-	    goToCam(camera.geometry.coordinates);
-	}
-	cam.classList.add('cam')
+
+	cam.onclick = e => goToCam(camera.geometry.coordinates);
+	cam.classList.add('cam');
 	cam.innerHTML = `<span> ${camera.properties.description}</span>`;
 	el.appendChild(cam);
     });
+
     const mapElem = document.getElementById('map');
     mapElem.prepend(el);
-}
+};
 
 const goToCam = coordinates => {
     map.flyTo({
 	center: [
-	     coordinates[0],
-	     coordinates[1]
-	]
+	    coordinates[0],
+	    coordinates[1]
+	],
+	zoom: 15
     });
-}
+};
 
 const addThreat = (marker, threatInfo) => {
     marker.classList.add('threat');
@@ -91,19 +91,23 @@ const addThreat = (marker, threatInfo) => {
 
 	overflowMarker.classList.add('overflowMarker');
 	overflowMarker.style.transform = 'initial';
+	marker.style.cursor = 'default';
 	marker.appendChild(overflowMarker);
 	marker.appendChild(threatDisplay(threatInfo));
 	marker.onclick = e => {
-	    removeThreat(marker);
-	}
+	    if (Array.from(e.target.classList).includes('cam-title')) {
+		alert('HOUHOU');
+	    } else {
+		removeThreat(marker);
+	    }
+	};
     };
 };
 const removeThreat = marker => {
-    while(marker.firstChild){
+    while (marker.firstChild)
 	marker.removeChild(marker.firstChild);
-    }
     initThreat();
-}
+};
 
 const threatDisplay = threatInfo => {
     const div = document.createElement('div');
@@ -144,7 +148,7 @@ const threatDisplay = threatInfo => {
 const initThreat = () => {
     const markers = document.getElementsByClassName('marker');
     const choosenMarker = Array.from(markers)
-    .filter(marker => 'Camera 2' === marker.dataset.description)[0];
+	  .filter(marker => 'Camera 2' === marker.dataset.description)[0];
     const camId = choosenMarker.dataset.description.match(/[0-9]/)[0];
 
     addThreat(choosenMarker, {
@@ -158,7 +162,7 @@ const initThreat = () => {
 	suspectAge: 27,
 	suspectSize: '1m85'
     });
-}
+};
 
 map.on('load', _ => {
     buildMarkers(geojson);
