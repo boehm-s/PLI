@@ -38,7 +38,6 @@ body,
     background: #000;
     border-radius: 8px;
     border: 4px solid #C6C6C6;
-    transition: 0.4s;
 }
 
 .status-info > .line {

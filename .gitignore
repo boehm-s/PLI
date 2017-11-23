@@ -62,3 +62,7 @@ Cargo.lock
 target/
 target/debug
 *.rlib
+
+# emacs
+
+.tern-port
