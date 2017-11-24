@@ -7,6 +7,10 @@ body,
     background: #1a2333;
 }
 
+#map {
+    height: calc(100% + 25px);
+}
+
 .cl-red {
     color: #F00;
 }
@@ -192,5 +196,31 @@ body,
 }
 
 .cam-list > .cam:hover {
+    cursor: pointer;
+}
+
+
+/* cam view */
+
+#cam-view {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    transition: 0.4s;
+}
+
+.cam-view-display {
+    z-index: 999 !important;
+    background: #000;
+}
+
+#back-to-map {
+    margin-left: 25px;
+    margin-top: 15px;
+    font-size: 60px;
+    color: #FFF;
     cursor: pointer;
 }
